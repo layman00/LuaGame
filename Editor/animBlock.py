@@ -1,4 +1,4 @@
-import C_object
+import cocos2dx
 import string
 import weakref
 import gl
@@ -85,7 +85,7 @@ class LayerData:
 			if len(slef.m_particlePath) == 0:
 				print "粒子文件路径为空，请设置"
 				return
-			particle = C_object.CParticleSysmQuad(self.m_particlePath)
+			particle = cocos2dx.CParticleSysmQuad(self.m_particlePath)
 			if particle:
 				if self.m_bIsBlendAdditive:
 					particle.SetBlendAdditive(self.m_bIsBlendAdditive)
@@ -102,7 +102,7 @@ class LayerData:
 				print "layer load partilce failed!"
 			self.m_sprite = particle
 		elif self.m_bIsGhostNode:
-			node = C_object.CNode()
+			node = cocos2dx.CNode()
 			node.SetParent(parent)
 			node.SetZ(self.m_layerId)
 			slef.m_sprite = None
@@ -110,7 +110,7 @@ class LayerData:
 			if len(keyData0.m_picFrameName) == 0:
 				print "ERROR:: key 0 dose not have the picFrame name"
 				return
-			layerSprite = C_object.CShaderSprite.CreatewithFile(keyData0.m_picFrameName)
+			layerSprite = cocos2dx.CShaderSprite.CreatewithFile(keyData0.m_picFrameName)
 			if layerSprite:
 				self.m_origBlendScr,self.m_origBlendDst = layerSprite.getBlendFunc()
 				if self.m_bIsBlendAdditive:
@@ -135,7 +135,7 @@ class LayerData:
 			if len(slef.m_particlePath) == 0:
 				print "粒子文件路径为空，请设置"
 				return
-			particle = C_object.CParticleSysmQuad(self.m_particlePath)
+			particle = cocos2dx.CParticleSysmQuad(self.m_particlePath)
 			if particle:
 				if self.m_bIsBlendAdditive:
 					particle.SetBlendAdditive(self.m_bIsBlendAdditive)
@@ -152,7 +152,7 @@ class LayerData:
 				print "layer load partilce failed!"
 			self.m_sprite = particle
 		elif self.m_bIsGhostNode:
-			node = C_object.CNode()
+			node = cocos2dx.CNode()
 			node.SetParent(parent)
 			node.SetZ(self.m_layerId)
 			slef.m_sprite = None
@@ -160,12 +160,12 @@ class LayerData:
 			if len(keyData0.m_picFrameName) == 0:
 				print "ERROR:: key 0 dose not have the picFrame name"
 				return
-			spriteFrameCache = C_object.CSpriteFrameCache.getInstance()
+			spriteFrameCache = cocos2dx.CSpriteFrameCache.getInstance()
 			frame = spriteFrameCache.GetSpriteFrameByName(keyData0.m_picFrameName)
 			if frame == None:
 				print "ERROR:: frame name not exist!%S"%keyData0.m_picFrameName
 				return
-			layerSprite = C_object.CShaderSprite.CreatewithFile(frame)
+			layerSprite = cocos2dx.CShaderSprite.CreatewithFile(frame)
 			if layerSprite:
 				self.m_origBlendScr,self.m_origBlendDst = layerSprite.getBlendFunc()
 				if self.m_bIsBlendAdditive:
@@ -328,7 +328,7 @@ class AnimBlock:
 
 	def _loadWithNewNode(self):
 		"编辑器接口"
-		node = C_object.CNode()
+		node = cocos2dx.CNode()
 		self.m_node = noder
 		return node
 
@@ -336,14 +336,14 @@ class AnimBlock:
 		if len(plistPath) == 0:
 			print "plistPath is empty,load failed"
 			return None
-		batchNode = C_Object.CSpriteBatchNode.batchNodeWithPlist(plistPath)
+		batchNode = cocos2dx.CSpriteBatchNode.batchNodeWithPlist(plistPath)
 		self.m_node = batchNode
 		return batchNode
 
 	def _loadAnimBlockWithFile(self,filePath):
 		self._clearAnimBlock()
 
-		xmlDocument = C_object.CXmlDocument()
+		xmlDocument = cocos2dx.CXmlDocument()
 		loadSuccess  = xmlDocument.LoadFile(filePath)
 		if not loadSuccess:
 			print "File load failed!!%s"%filePath
@@ -578,13 +578,13 @@ class AnimBlock:
 				levelElement = levelElement.NextSiblingElement("levelInfo")
 
 	def _animKeySetTexNormal(self,targetSprite,picName):
-		textureCache = C_object.CTextureCache.GetInstance()
+		textureCache = cocos2dx.CTextureCache.GetInstance()
 		keyTex = textureCache.AddImage(picName)
 		if keyTex == None:
 			print "load animation key picture failed"
 			return
 		texW,texH = keyTex.GetContentSize()
-		frame = C_object.CSpriteFrame(keyTex,0,0,texW,texW)
+		frame = cocos2dx.CSpriteFrame(keyTex,0,0,texW,texW)
 		if frame:
 			targetSprite.SetSpriteFrame(frame)
 			levelData = self.getLevelData(self.m_CurLevelId)
@@ -605,7 +605,7 @@ class AnimBlock:
 					break
 
 	def _animKeySetTexFrame(self,targetSprite,picName):
-		spriteFrameCache = C_object.CSpriteFrameCache.GetInstance()
+		spriteFrameCache = cocos2dx.CSpriteFrameCache.GetInstance()
 		frame  = spriteFrameCache.GetSpriteFrameByname(picName)
 		if frame:
 			targetSprite.SetSpriteFrame(frame)
@@ -670,7 +670,7 @@ class AnimBlock:
 		self.m_node = self._loadWithNewNode()
 		if self.m_bIsPlistRes:
 			if self.m_bFuncAddPlist:
-				spriteFrameCache = C_object.CSpriteFrameCache.GetInstance()
+				spriteFrameCache = cocos2dx.CSpriteFrameCache.GetInstance()
 				spriteFrameCache.AddSpriteFrameWithFile(self.m_plistPath)
 				stateData.setupStateFrame(self.m_node)
 		else:
@@ -788,52 +788,52 @@ class AnimBlock:
 						print "there are no texture name set,play anim failed"
 					else:
 						if self.m_bIsPlistRes:
-							action = C_object.CCallFunc(self._animKeySetTexFrame,layerData.m_sprite,keyData.m_picFrameName)
+							action = cocos2dx.CCallFunc(self._animKeySetTexFrame,layerData.m_sprite,keyData.m_picFrameName)
 						else:
-							action = C_object.CCallFunc(self._animKeySetTexNormal,layerData.m_sprite,keyData.m_picFrameName)
+							action = cocos2dx.CCallFunc(self._animKeySetTexNormal,layerData.m_sprite,keyData.m_picFrameName)
 						tempInstantList.append(action)
 
 				if keyData.m_bIsChangePos:
 					if keyData.m_bIsTransPos and lastKeyData:
-						action = C_object.CMoveTo(transPosDuraAccu,keyData.m_posX,keyData.m_posY)
+						action = cocos2dx.CMoveTo(transPosDuraAccu,keyData.m_posX,keyData.m_posY)
 						actionTransPosList.append(action)
 					else:
-						action = C_object.CCallFunc(self._animKeySetPos,layerData.m_sprite,keyData)
+						action = cocos2dx.CCallFunc(self._animKeySetPos,layerData.m_sprite,keyData)
 						tempInstantList.append(action)
 
-						action = =c_object.CDelayTime(transPosDuraAccu)
+						action = =cocos2dx.CDelayTime(transPosDuraAccu)
 						actionTransPosList.append(action)
 					transPosDuraAccu = 0.0
 
 				if keyData.m_bIsChangeScale:
 					if keyData.m_bIsTransScale and lastKeyData:
-						action = C_object.CScale(transPosDuraAccu,keyData.m_sacleX,keyData.m_scaleY)
+						action = cocos2dx.CScale(transPosDuraAccu,keyData.m_sacleX,keyData.m_scaleY)
 						actionTransScaleList.append(action)
 					else:
-						action = C_object.CCallFunc(self._animKeySetScale,layerData.m_sprite,keyData)
+						action = cocos2dx.CCallFunc(self._animKeySetScale,layerData.m_sprite,keyData)
 						tempInstantList.append(action)
 
-						action = =c_object.CDelayTime(transScaleDuraAccu)
+						action = =cocos2dx.CDelayTime(transScaleDuraAccu)
 						actionTransScaleList.append(action)
 					transScaleDuraAccu = 0.0
 
 				if keyData.m_bIsChangeRotate:
 					if keyData.m_bIsTransRotate and lastKeyData:
-						action = C_object.CRotationTo(transRotateDuraAccu,keyData.m_angle)
+						action = cocos2dx.CRotationTo(transRotateDuraAccu,keyData.m_angle)
 						actionsTransRotateList.append(action)
 					else:
-						action = c_object.CCallFunc(self._animKeySetRotation,layerData.m_sprite,keyData)
+						action = cocos2dx.CCallFunc(self._animKeySetRotation,layerData.m_sprite,keyData)
 						tempInstantList.append(action)
 
-						action = C_object.CDelayTime(transRotateDuraAccu)
+						action = cocos2dx.CDelayTime(transRotateDuraAccu)
 					transRotateDuraAccu = 0.0
 
 				if keyData.m_bIsChangeOpacity:
 					if keydata.m_bIsTransOpacity and lastKeyData:
-						action  = c_object.FadeTo(transOpacityDuraAccu,keyData.m_opacity)
+						action  = cocos2dx.FadeTo(transOpacityDuraAccu,keyData.m_opacity)
 						tempInstantList.append(action)
 
-						action = C_object.CDelayTime(transOpacityDuraAccu)
+						action = cocos2dx.CDelayTime(transOpacityDuraAccu)
 						actionsTransOpacityList.append(action)
 					transOpacityDuraAccu = 0.0
 
@@ -844,14 +844,14 @@ class AnimBlock:
 
 				if layerData.m_bIsParticle:
 					if keyData.m_bIsStartParticle:
-						action = C_object.CCallFunc(self._animKeyStartPaticle,layerData.m_sprite)
+						action = cocos2dx.CCallFunc(self._animKeyStartPaticle,layerData.m_sprite)
 						tempInstantList.append(action)
 					elif keyData.m_bIsStopParticle:
-						action = C_object.CCallFunc(self._animKeyStopPaticle,layerData.m_sprite)
+						action = cocos2dx.CCallFunc(self._animKeyStopPaticle,layerData.m_sprite)
 						tempInstantList.append(action)
 
 				if lastKeyData and tempInstantList:#如果该帧有哦instant事件的话，就在动画列表前面加上delaytime
-					action = C_object.CDelayTime(instantDuraAccu)
+					action = cocos2dx.CDelayTime(instantDuraAccu)
 					tempInstantList.insert(0,action)
 					instantDuraAccu = 0.0
 
@@ -871,17 +871,17 @@ class AnimBlock:
 			if bRunAnim:
 				spawnList = []
 				animLeftTime = =stateData.m_animDura - lastInstantKeyTime
-				actionLeft = C_object.CDelayTime(animLeftTime)#补全最后的时间
-				actionEnd = c_object.CCallFunc(self._layerAnimEnd,stateData)#动画终止要统计完结的动画
+				actionLeft = cocos2dx.CDelayTime(animLeftTime)#补全最后的时间
+				actionEnd = cocos2dx.CCallFunc(self._layerAnimEnd,stateData)#动画终止要统计完结的动画
 				actionInstantList.extend([actionLeft,actionEnd])
-				seqInstant = C_object.Csequence(actionInstantList)
+				seqInstant = cocos2dx.Csequence(actionInstantList)
 				sqawnList.append(seqInstant)
 			transPosNum = len(actionTransPosList)
 			if transPosNum == 1:
 				seqTransPos = actionTransPosList[0]
 				spawnList.append(seqTransPos)
 			elif transPosNum>1:
-				seqTransPos = C_object.Csequence(actionTransPosList)
+				seqTransPos = cocos2dx.Csequence(actionTransPosList)
 				spawnList.append(seqTransPos)
 
 			transScaleNum = len(actionTransScaleList)
@@ -889,7 +889,7 @@ class AnimBlock:
 				seqTransScale = actionTransScaleList[0]
 				spawnList.append(seqTransScale)
 			elif transScaleNum>1:
-				seqTransScale = C_object.Csequence(actionTransScaleList)
+				seqTransScale = cocos2dx.Csequence(actionTransScaleList)
 				spawnList.append(seqTransScale)
 
 			transRotateNum = len(actionTransRotateList)
@@ -897,7 +897,7 @@ class AnimBlock:
 				seqTransRotate = actionTransRotateList[0]
 				spawnList.append(seqTransRotate)
 			elif transRotateNum>1:
-				seqTransRotate = C_object.Csequence(actionTransRotateList)
+				seqTransRotate = cocos2dx.Csequence(actionTransRotateList)
 				spawnList.append(seqTransRotate)
 
 			transOpacityNum = len(actionTransOpacityList)
@@ -905,7 +905,7 @@ class AnimBlock:
 				seqTransOpacity = actionTransOpacityList[0]
 				spawnList.append(seqTransOpacity)
 			elif transOpacityNum>1:
-				seqTransOpacity = C_object.Csequence(actionTransOpacityList)
+				seqTransOpacity = cocos2dx.Csequence(actionTransOpacityList)
 				spawnList.append(seqTransOpacity)
 
 			#通过CCSpawn的方式同时进行动画
@@ -915,12 +915,12 @@ class AnimBlock:
 			if spawnlen == 1:
 				spawnAll = spawnList[0]
 			elif spawnlen>1:
-				spawnAll = C_object.CSpawn(spawnList)
+				spawnAll = cocos2dx.CSpawn(spawnList)
 			if spawnAll !=None and layerData.m_sprite:
 				if stateData.m_nLoopNum>0:
-					spawnAll = C_object.CRepeat(spawnAll,stateData.m_nLoopNum)
+					spawnAll = cocos2dx.CRepeat(spawnAll,stateData.m_nLoopNum)
 				elif stateData.m_bIsLoop:
-					spawnAll = C_object.CRepeatForever(spawnAll)
+					spawnAll = cocos2dx.CRepeatForever(spawnAll)
 				layerData.m_sprite.StopAllActions()
 				layerData.m_sprite.RunAction(spawnAll)
 
@@ -977,14 +977,14 @@ class AnimBlock:
 				obj = layerData.m_sprite
 				keyData0 = layerData.getKeyData(0)
 				scaleX,scaleY = keyData0.m_scaleX,keyData0.m_scaleY
-				act1 = C_object.CScaleTo(0.1,scaleX*1.2,scaleY*1.3)
-				act2 = C_object.CScaleTo(0.1,scaleX,scaleY)
+				act1 = cocos2dx.CScaleTo(0.1,scaleX*1.2,scaleY*1.3)
+				act2 = cocos2dx.CScaleTo(0.1,scaleX,scaleY)
 			if index == 1:
-				resSetAction = C_object.CCallFunc(self.afterSpring)
-				seq = C_object.Csequence.CreateWithTwoActions(C_object.Csequence.Create.CreateWithTwoActions(act1,act2),resSetAction)
+				resSetAction = cocos2dx.CCallFunc(self.afterSpring)
+				seq = cocos2dx.Csequence.CreateWithTwoActions(cocos2dx.Csequence.Create.CreateWithTwoActions(act1,act2),resSetAction)
 
 			else:
-				seq = C_object.Csequence.CreateWithTwoActions(act1,act2)
+				seq = cocos2dx.Csequence.CreateWithTwoActions(act1,act2)
 			index +=1
 			obj.RunAction(seq)
 
