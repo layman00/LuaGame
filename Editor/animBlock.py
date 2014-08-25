@@ -3,9 +3,6 @@ import string
 import weakref
 import gl
 
-
-
-
 "
 GL_ONE = 1
 GL_SRC_COLOR = 0x0300
